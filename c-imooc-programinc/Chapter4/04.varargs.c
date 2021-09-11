@@ -4,7 +4,7 @@
 
 /**开发者使用变长参数的方式*/
 void HandleVarargs(
-        int arg_count,//边长参数的个数
+        int arg_count,//变长参数的个数
         ...// 参数
 ) {
     // 1. 定义 va_list 用于获取我们变长参数

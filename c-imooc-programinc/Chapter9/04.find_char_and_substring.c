@@ -10,6 +10,7 @@ int main() {
     puts(result);
     puts(result_reverse);
 
+
     //=============== 在字符串中查字串 ===============
     char *substring_position = strstr(string, "Wor");//返回的是 World 的起始位置。
     printf("substring_position = %s\n", substring_position);

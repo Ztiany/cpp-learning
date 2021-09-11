@@ -9,7 +9,9 @@
 
     1. 命令行进入到 mathutils 目录下：
         执行 gcc -c factorial.c fibonacci.c 命令，得到汇编后的 factorial.o 和 fibonacci.o 文件。【如果是 Linux 平台，那就是 .elf 文件】
-        指定  ar rcs libmathutils.a factorial.o fibonacci.o 命令，得到打包后的 libmathutils.a 静态链接库【此时可以执行 ar t libmathutils.a 命令查看 libmathutils.a 内部包含什么文件】。
+        执行  ar rcs libmathutils.a factorial.o fibonacci.o 命令，得到打包后的 libmathutils.a 静态链接库【此时可以执行 ar t libmathutils.a 命令查看 libmathutils.a 内部包含什么文件】。
+                 注意：ar 命令是一个建立或修改备存文件，或是从备存文件中抽取文件的工具。
+
     2. 命令行进入 Chapter13 目录下：
         执行 gcc 02.static_library.c mathutils\libmathutils.a 命令，得到可执行文件 a.exe。【用 file 命令可以查看 a.exe 文件的类型】
 

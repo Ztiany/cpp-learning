@@ -11,6 +11,7 @@ void Printlnf(const char *format, ...) {
     va_end(args);
 }
 
+
 /**
  * 版本2：使用宏函数
  *  1. __VA_ARGS__ 用于在宏函数获取边长参数。
@@ -36,6 +37,7 @@ int main() {
     PRINT_INT(value); // value: 2
 
     int x = 3;
+    int y = 4;
     PRINT_INT(x);
     PRINT_INT(3 + 4);
 

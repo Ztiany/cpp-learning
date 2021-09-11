@@ -36,7 +36,7 @@ int main() {
     printf("char 1: %c\n", char_1_escape_hex);
 
     //=============== 字符集 & 宽字符 ===============
-    //CJK 中日韩字符集
+    // CJK 中日韩字符集
     // Unicode  统一字符集
     // Code point 码点
     // C95 开始支持宽字符

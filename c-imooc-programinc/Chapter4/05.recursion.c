@@ -43,7 +43,7 @@ unsigned int FibonacciByIteration(unsigned int n) {
 
 //=============== 函数的递归 ===============
 int main(void) {
-    //递归要有结束条件，不如递归太深，会对栈空间造成很大压力。
+    //递归要有结束条件，不要递归太深，会对栈空间造成很大压力。
     printf("3! : %d\n", Factorial(3));
     printf("5! : %d\n", Factorial(5));
     printf("10! : %d\n", FactorialByIteration(10));

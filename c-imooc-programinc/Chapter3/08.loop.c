@@ -3,17 +3,17 @@
 
 //=============== 循环 ===============
 int main() {
-  /*
-   * while (<condition>) {
-   *   ... statement
-   * }
-   */
+    /*
+     * while (<condition>) {
+     *   ... statement
+     * }
+     */
 
-  /*
-   * do {
-   *  ... statement
-   * } while (<condition>);
-   */
+    /*
+     * do {
+     *  ... statement
+     * } while (<condition>);
+     */
 
 //#define ADD '+'
 //#define SUB '-'
@@ -60,14 +60,14 @@ int main() {
 //    printf("%d\n", command);
 //  } while (command != 'q');
 
-  /*
-   * for (<initialization>; <condition>; <state>) {
-   *  ... statement
-   * }
-   *
-   *  < C99
-   *  initialization 不能有变量定义
-   */
+    /*
+     * for (<initialization>; <condition>; <state>) {
+     *  ... statement
+     * }
+     *
+     *  < C99
+     *  initialization 不能有变量定义
+     */
 
 //  int num = 1;
 //  int sum = 0;
@@ -77,40 +77,40 @@ int main() {
 //    num++;
 //  }
 
-  // < C99
+    // < C99
 //  int num;
 //  int sum = 0;
 //  for (num = 1; num < 100; ++num) {
 //    sum += num;
 //  }
 
-  // since C99
-  int sum = 0;
-  for (int num = 1; num < 100; ++num) {
-    sum += num;
-  }
+    // since C99
+    int sum = 0;
+    for (int num = 1; num < 100; ++num) {
+        sum += num;
+    }
 
-  printf("sum of [1, 100]:%d\n", sum);
+    printf("sum of [1, 100]:%d\n", sum);
 
-  int sumij = 0;
-  for (int i = 0, j = 0; i <= 100 && j <= 100; ++i, ++j) {
-    sumij += i * (i + j);
-  }
-  printf("sumij: %d\n", sumij);
+    int sumij = 0;
+    for (int i = 0, j = 0; i <= 100 && j <= 100; ++i, ++j) {
+        sumij += i * (i + j);
+    }
+    printf("sumij: %d\n", sumij);
 
-  // continue break
-  for (int i = 0; i < 10; ++i) {
-    if (i == 2) continue;
-    if (i == 8) break;
-    printf("i: %d\n", i);
-  }
+    // continue break
+    for (int i = 0; i < 10; ++i) {
+        if (i == 2) continue;
+        if (i == 8) break;
+        printf("i: %d\n", i);
+    }
 
-  // goto
-  int i = 0;
-  begin:
-  printf("%d\n", i);
-  if (i++ < 5) {
-    goto begin;
-  }
-  return 0;
+    // goto
+    int i = 0;
+    begin:
+    printf("%d\n", i);
+    if (i++ < 5) {
+        goto begin;
+    }
+    return 0;
 }

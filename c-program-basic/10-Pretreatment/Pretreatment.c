@@ -35,7 +35,8 @@
 #define MY_NAME  "Ztiany"
 #endif
 
-#define PR(...) printf(__VA_ARGS__)//__VA_ARGS__是一个预定义宏，表示可变参数
+#define PR1(...) printf(__VA_ARGS__)//__VA_ARGS__是一个预定义宏，表示可变参数
+#define PR2(X, ...) printf("Message " #X ": " __VA_ARGS__)
 
 #define NEWLINE printf("-------------------------------------------------------\n")
 
@@ -72,9 +73,15 @@ int main() {
     //使用NEWLINE
     NEWLINE;
 
-    //使用PR
-    PR("Hello PR\n");
-    PR("name=%s,age=%d\n","Ztiany",27);
+    //使用 PR1
+    PR1("Hello PR\n");
+    PR1("name=%s,age=%d\n","Ztiany",27);
+
+    //使用 PR2
+    PR2(1, "x = %g\n", x);
+    PR2(2, "x = %.2f, y = %.4f\n", x, y);
+    char* aa = "sd""cd";//会被拼接为 sdcd
+    printf("%s\n", aa);
 
     //打印预定义宏
     printPredefinedMacros();
