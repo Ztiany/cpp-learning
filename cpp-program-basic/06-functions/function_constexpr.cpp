@@ -2,17 +2,18 @@
  ============================================================================
  
  Author      : Ztiany
- Description : 内联函数
+ Description : constexpr 函数
 
  ============================================================================
  */
 
-/*声明内联函数*/
-inline int add(int a, int b) {
-    return a + b;
+/*声明constexpr函数 */
+constexpr int length() {
+    return 3;
 }
 
 int main(){
-    add(1, 2);
+    int a = length();
     return 0;
 }
+

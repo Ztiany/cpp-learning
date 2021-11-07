@@ -19,7 +19,7 @@
 
 学习资料：
 
-- [C++ 基础教程完整版](http://yun.itheima.com/course/275.html) 第三阶段C++开发编程
+- [C++ 基础教程完整版](http://yun.itheima.com/course/275.html) 第三阶段 C++ 开发编程
 - 《C++ Prime》
 
 Clion 调试

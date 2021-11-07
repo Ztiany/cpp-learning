@@ -4,6 +4,10 @@ project(Interactor)
 set(CMAKE_CXX_STANDARD 11)
 
 # c call cpp
+set(SOURCE_FILES extern_c/extern_c.cpp)
+add_executable(extern_c ${SOURCE_FILES})
+
+# c call cpp
 set(SOURCE_FILES c_call_cpp/main.c c_call_cpp/CppLibrary.cpp)
 add_executable(c_call_cpp ${SOURCE_FILES})
 

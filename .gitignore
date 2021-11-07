@@ -37,3 +37,6 @@
 cmake-build*/
 cmake-build-debug/
 
+# Visual Studio Code
+.vs
+
