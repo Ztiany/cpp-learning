@@ -4,3 +4,4 @@ set(CMAKE_C_STANDARD 11)
 
 # add subdirectories.
 add_subdirectory(chapter01/)
+add_subdirectory(chapter02/)
