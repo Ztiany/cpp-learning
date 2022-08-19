@@ -1,6 +1,6 @@
-# C++基础入门
+# C++ 基础入门
 
-代码列表：
+**代码列表**：
 
 - exceptions 异常处理
 - container 容器、泛型算法
@@ -17,11 +17,13 @@
 - template 模板
 - type 数据类型
 
-学习资料：
+**学习资料**：
 
 - [C++ 基础教程完整版](http://yun.itheima.com/course/275.html) 第三阶段 C++ 开发编程
 - 《C++ Prime》
 
-Clion 调试
+**Clion Debug**：
 
 - [在 CLion 中进行调试](https://blog.jetbrains.com/cn/2019/05/%E5%9C%A8-clion-%E4%B8%AD%E8%BF%9B%E8%A1%8C%E8%B0%83%E8%AF%95/)
+
+**Run the code**: please load a CmakeLists.txe file from any sub-folders to run examples."

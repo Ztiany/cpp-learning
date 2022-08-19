@@ -13,6 +13,6 @@
 using namespace std;
 
 int main() {
-    cout << "please load a CmakeLists.txe file from any subfolder to run examples.";
+    cout << "please load a CmakeLists.txe file from any sub-folders to run examples."
     return EXIT_SUCCESS;
 }
