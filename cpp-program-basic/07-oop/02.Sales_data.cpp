@@ -26,6 +26,7 @@ double Sales_data::avg_price() const {
 }
 
 Sales_data &Sales_data::combine(const Sales_data &rhs) {
+    std::cout << rhs.bookNo << std::endl;
     units_sold += rhs.units_sold;
     revenue += rhs.revenue;
     return *this;
@@ -51,5 +52,8 @@ ostream &print(ostream &os, const Sales_data &item) {
 }
 
 int main() {
+    Sales_data item;
+    std::string null_book("abc");
+    item.combine(static_cast<Sales_data>(null_book));
     return EXIT_SUCCESS;
 }

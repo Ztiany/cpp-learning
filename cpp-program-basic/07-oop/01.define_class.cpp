@@ -13,7 +13,6 @@
 using namespace std;
 
 static void test_box() {
-
     Box box1;        // 声明 box1，类型为 Box
     Box box2;        // 声明 box2，类型为 Box
 

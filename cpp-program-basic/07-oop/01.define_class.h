@@ -58,7 +58,6 @@ void Box::setHeight(double hei) {
     height = hei;
 }
 
-
 class LinkScreen {
     Box box;
     LinkScreen *next;
