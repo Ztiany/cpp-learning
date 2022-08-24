@@ -6,6 +6,7 @@
 
  ============================================================================
  */
+
 #include <string>
 #include <iostream>
 
@@ -14,23 +15,23 @@
 
 class MoveClass {
 private:
-    std::string *name_;
+    std::string *name;
 public:
 
-    MoveClass() : name_(nullptr) {
+    MoveClass() : name(nullptr) {
         std::cout << "MoveClass()" << std::endl;
     }
 
-    explicit MoveClass(const std::string &name) : name_(new std::string(name)) {
-        std::cout << name << "  MoveClass()" << std::endl;
+    explicit MoveClass(const std::string &name) : name(new std::string(name)) {
+        std::cout << name << " MoveClass()" << std::endl;
     }
 
     MoveClass(const MoveClass &other) {
-        if (other.name_) {
-            name_ = new std::string(*other.name_);
+        if (other.name) {
+            name = new std::string(*other.name);
         }
-        if (name_) {
-            std::cout << *name_ << "  copy MoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << " copy MoveClass()" << std::endl;
         } else {
             std::cout << "copy MoveClass()" << std::endl;
         }
@@ -40,23 +41,23 @@ public:
         if (this == &other) {
             return *this;
         }
-        delete name_;
-        if (other.name_) {
-            name_ = new std::string(*other.name_);
+        delete name;
+        if (other.name) {
+            name = new std::string(*other.name);
         }
-        if (name_) {
-            std::cout << *name_ << "  operator= MoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << " operator= MoveClass()" << std::endl;
         } else {
             std::cout << "operator= MoveClass()" << std::endl;
         }
         return *this;
     }
 
-    MoveClass(MoveClass &&other) noexcept : name_(other.name_) {
+    MoveClass(MoveClass &&other) noexcept: name(other.name) {
         //将源对象置为可析构状态
-        other.name_ = nullptr;
-        if (name_) {
-            std::cout << *name_ << "  move MoveClass()" << std::endl;
+        other.name = nullptr;
+        if (name) {
+            std::cout << *name << " move MoveClass()" << std::endl;
         } else {
             std::cout << "move MoveClass()" << std::endl;
         }
@@ -67,15 +68,15 @@ public:
             return *this;
         }
         //使用已有的资源
-        delete name_;
+        delete name;
         //执行资源拷贝
-        if (other.name_) {
-            name_ = other.name_;
+        if (other.name) {
+            name = other.name;
         }
         //将源对象置为可析构状态
-        other.name_ = nullptr;
-        if (name_) {
-            std::cout << *name_ << "  operator= move MoveClass()" << std::endl;
+        other.name = nullptr;
+        if (name) {
+            std::cout << *name << " operator= move MoveClass()" << std::endl;
         } else {
             std::cout << "operator= move MoveClass()" << std::endl;
         }
@@ -83,35 +84,35 @@ public:
     }
 
     ~MoveClass() {
-        if (name_) {
-            std::cout << *name_ << "  ~" << "MoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << "  ~" << "MoveClass()" << std::endl;
         } else {
             std::cout << "~" << "MoveClass()" << std::endl;
         }
-        delete name_;
+        delete name;
     }
 };
 
 class NoMoveClass {
 private:
-    std::string *name_;
+    std::string *name;
 public:
 
-    NoMoveClass() : name_(nullptr) {
+    NoMoveClass() : name(nullptr) {
         std::cout << "NoMoveClass()" << std::endl;
     }
 
-    explicit NoMoveClass(const std::string &name) : name_(new std::string(name)) {
-        std::cout << name << "  NoMoveClass()" << std::endl;
+    explicit NoMoveClass(const std::string &name) : name(new std::string(name)) {
+        std::cout << name << " NoMoveClass()" << std::endl;
     }
 
     NoMoveClass(const NoMoveClass &other) {
-        if (other.name_) {
-            name_ = new std::string(*other.name_);
+        if (other.name) {
+            name = new std::string(*other.name);
         }
 
-        if (name_) {
-            std::cout << *name_ << "  copy NoMoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << " copy NoMoveClass()" << std::endl;
         } else {
             std::cout << "copy NoMoveClass()" << std::endl;
         }
@@ -121,12 +122,12 @@ public:
         if (this == &other) {
             return *this;
         }
-        delete name_;
-        if (other.name_) {
-            name_ = new std::string(*other.name_);
+        delete name;
+        if (other.name) {
+            name = new std::string(*other.name);
         }
-        if (name_) {
-            std::cout << *name_ << "  operator= NoMoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << " operator= NoMoveClass()" << std::endl;
         } else {
             std::cout << "operator= NoMoveClass()" << std::endl;
         }
@@ -134,12 +135,12 @@ public:
     }
 
     ~NoMoveClass() {
-        if (name_) {
-            std::cout << *name_ << "  ~" << "NoMoveClass()" << std::endl;
+        if (name) {
+            std::cout << *name << "  ~" << "NoMoveClass()" << std::endl;
         } else {
             std::cout << "~" << "NoMoveClass()" << std::endl;
         }
-        delete name_;
+        delete name;
     }
 };
 
