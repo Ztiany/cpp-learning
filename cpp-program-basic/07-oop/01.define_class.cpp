@@ -1,12 +1,3 @@
-/*
- ============================================================================
- 
- Author      : Ztiany
- Description : 类的定义
-
- ============================================================================
- */
-
 #include "01.define_class.h"
 #include <iostream>
 
@@ -35,6 +26,7 @@ static void test_box() {
     // box 2 的体积
     volume = box2.getVolume();
     cout << "The volume of the box2: " << volume << endl;
+
 
     LinkScreen linkScreen;
 }

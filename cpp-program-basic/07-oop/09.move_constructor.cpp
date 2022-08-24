@@ -26,8 +26,18 @@ void sample1() {
 void sample2() {
     int vi = 3;
     int &&rri = std::move(vi);
+    int &&rri2 = 3;
+    int &vi2 = rri2;
+    int &&rri3 = std::move(rri);
+    int vi3 = 3;
+    int vi4 = 3;
     cout << "address  rri = " << &rri << endl;
-    cout << "address vi = " << &vi << endl;
+    cout << "address   vi = " << &vi << endl;
+    cout << "address rri3 = " << &rri3 << endl;
+    cout << "address rri2 = " << &rri2 << endl;
+    cout << "address  vi2 = " << &vi2 << endl;
+    cout << "address  vi3 = " << &vi3 << endl;
+    cout << "address  vi4 = " << &vi4 << endl;
 }
 
 void sample3() {
@@ -59,9 +69,9 @@ void sample5() {
 //-Og -fno-elide-constructors
 int main() {
     //sample1();
-    //sample2();
+    sample2();
     //sample3();
     //sample4();
-    sample5();
+    //sample5();
     return EXIT_SUCCESS;
 }
