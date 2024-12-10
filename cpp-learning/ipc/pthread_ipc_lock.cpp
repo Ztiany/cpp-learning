@@ -4,19 +4,21 @@
  * =======================================
  */
 
-#include "pthread_ipc_lock.hpp"
 #include <sys/wait.h>
 #include <sys/stat.h>
+#include "pthread_ipc_lock.hpp"
+
+#define LOCK_FILE "pthread_mutex_lock.lock"
 
 #define SHARED_FILE "pthread_test_shared_file.txt"
 
-static void doSharedMemoryEdition(char* shared, ShmMutex& mutex) {
+static void doSharedMemoryEdition(char* shared, const ShmMutex& mutex) {
     ShmMutexScope mutexScope(mutex);
     const int current = atoi(shared);
     sprintf(shared, "%d", current + 1);
 }
 
-static void truncateFile(const int fd, ShmMutex& mutex) {
+static void truncateFile(const int fd, const ShmMutex& mutex) {
     struct stat st = {};
 
     ShmMutexScope mutexScope(mutex);
@@ -32,8 +34,8 @@ static void truncateFile(const int fd, ShmMutex& mutex) {
     }
 }
 
-static void commonWork(const string& host) {
-    ShmMutex shmMutex;
+static void commonWork(const string& host, const ShmMutex& shmMutex) {
+    cout << "work of " << host << " started!" << endl;
 
     const int fd = open(SHARED_FILE, O_RDWR | O_CREAT, 0666);
     if (fd == -1) {
@@ -71,12 +73,16 @@ static void commonWork(const string& host) {
 
 static void doChildWork() {
     cout << "do child work" << endl;
-    commonWork(string("child"));
+    const ShmMutex shmMutex(string(LOCK_FILE), false);
+
+    commonWork(string("child"), shmMutex);
 }
 
 static void doParentWork(const __pid_t child) {
     cout << "do parent work" << endl;
-    commonWork(string("parent"));
+    const ShmMutex shmMutex(string(LOCK_FILE), true);
+
+    commonWork(string("parent"), shmMutex);
 
     int status = 0;
     if (waitpid(child, &status, 0) == -1) {

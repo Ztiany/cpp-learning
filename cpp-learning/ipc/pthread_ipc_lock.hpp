@@ -10,16 +10,16 @@
 
 using namespace std;
 
-#define LOCK_FILE "pthread_mutex_lock.lock"
-
 struct MutexData {
     pthread_mutex_t mutex;
     pthread_mutexattr_t mutexattr;
+    bool initialized;
 };
 
 class ShmMutex {
     MutexData* mutexData;
-    int fd;
+    int mutexFd;
+    bool mainProcess;
 
 public:
     ShmMutex(ShmMutex& mutex) = delete;
@@ -27,8 +27,9 @@ public:
     ShmMutex& operator=(ShmMutex& mutex) = delete;
     ShmMutex& operator=(ShmMutex&& mutex) = delete;
 
-    ShmMutex() : mutexData(nullptr), fd(-1) {
-        if (!initShmMutex()) {
+    explicit ShmMutex(const string& mutexFile, const bool isMain)
+        : mutexData(nullptr), mutexFd(-1), mainProcess(isMain) {
+        if (!initShmMutex(mutexFile)) {
             cleanup();
             throw std::runtime_error("Failed to initialize shared mutex");
         }
@@ -86,77 +87,93 @@ public:
     }
 
 private:
-    void cleanup() {
-        // todo: safely call pthread_mutex_destroy(&mutexData->mutex), because we should call it only once.
-        if (mutexData && mutexData != MAP_FAILED) {
-            munmap(mutexData, sizeof(MutexData));
-            mutexData = nullptr;
-        }
-        if (fd != -1) {
-            close(fd);
-            fd = -1;
-        }
-    }
-
-    bool initShmMutex() {
-        fd = open(LOCK_FILE, O_RDWR | O_CREAT, 0666);
-        if (fd == -1) {
-            perror("open");
+    bool initShmMutex(const string& mutexFile) {
+        mutexFd = open(mutexFile.c_str(), O_RDWR | O_CREAT, 0666);
+        if (mutexFd == -1) {
+            perror("initShmMutex.open");
             return false;
         }
 
-        // todo: safely call ftruncate, because we should call it only once.
-        if (ftruncate(fd, sizeof(pthread_mutex_t)) != 0) {
-            perror("ftruncate");
-            return false;
+        if (mainProcess) {
+            if (ftruncate(mutexFd, sizeof(MutexData)) != 0) {
+                perror("initShmMutex.ftruncate");
+                return false;
+            }
         }
 
         mutexData = static_cast<MutexData*>(mmap(
             nullptr,
-            sizeof(pthread_mutex_t),
+            sizeof(MutexData),
             PROT_READ | PROT_WRITE,
             MAP_SHARED,
-            fd,
+            mutexFd,
             0
         ));
+
         if (mutexData == MAP_FAILED) {
-            perror("mmap");
-            mutexData = nullptr;
-            return false;
-        }
-        // todo: safely call the following methods, because we should call them only once.
-        memset(mutexData, 0, sizeof(MutexData));
-
-        if (pthread_mutexattr_init(&mutexData->mutexattr) != 0) {
-            perror("pthread_mutexattr_init");
-            return false;
-        }
-        if (pthread_mutexattr_setpshared(&mutexData->mutexattr, PTHREAD_PROCESS_SHARED) != 0) {
-            perror("pthread_mutexattr_setpshared");
-            return false;
-        }
-        if (pthread_mutexattr_setrobust(&mutexData->mutexattr, PTHREAD_MUTEX_ROBUST) != 0) {
-            perror("pthread_mutexattr_setrobust");
-            return false;
-        }
-        if (pthread_mutex_init(&mutexData->mutex, &mutexData->mutexattr) != 0) {
-            perror("pthread_mutex_init");
+            perror("initShmMutex.mmap");
             return false;
         }
 
-        if (pthread_mutexattr_destroy(&mutexData->mutexattr) != 0) {
-            perror("pthread_mutexattr_destroy");
+        // parent
+        if (mainProcess) {
+            memset(mutexData, 0, sizeof(MutexData));
+            mutexData->initialized = false;
+
+            if (pthread_mutexattr_init(&mutexData->mutexattr) != 0) {
+                perror("initShmMutex.pthread_mutexattr_init");
+                return false;
+            }
+            if (pthread_mutexattr_setpshared(&mutexData->mutexattr, PTHREAD_PROCESS_SHARED) != 0) {
+                perror("initShmMutex.pthread_mutexattr_setpshared");
+                return false;
+            }
+            if (pthread_mutexattr_setrobust(&mutexData->mutexattr, PTHREAD_MUTEX_ROBUST) != 0) {
+                perror("initShmMutex.pthread_mutexattr_setrobust");
+                return false;
+            }
+            if (pthread_mutex_init(&mutexData->mutex, &mutexData->mutexattr) != 0) {
+                perror("initShmMutex.pthread_mutex_init");
+                return false;
+            }
+
+            if (pthread_mutexattr_destroy(&mutexData->mutexattr) != 0) {
+                perror("initShmMutex.pthread_mutexattr_destroy");
+            }
+
+            mutexData->initialized = true;
+            cout << "Mutex data initialized" << endl;
+            return true;
         }
 
+        // children.
+        do {
+            printf("child(%d) waits for initialization.\n", getpid());
+            usleep(100);
+        } while (mutexData->initialized == false);
         return true;
+    }
+
+    void cleanup() {
+        if (mutexData && mutexData != MAP_FAILED) {
+            if (mainProcess) {
+                pthread_mutex_destroy(&mutexData->mutex);
+            }
+            munmap(mutexData, sizeof(MutexData));
+            mutexData = nullptr;
+        }
+        if (mutexFd != -1) {
+            close(mutexFd);
+            mutexFd = -1;
+        }
     }
 };
 
 class ShmMutexScope {
-    ShmMutex& mutex;
+    const ShmMutex& mutex;
 
 public:
-    explicit ShmMutexScope(ShmMutex& mutex) : mutex(mutex) {
+    explicit ShmMutexScope(const ShmMutex& mutex) : mutex(mutex) {
         if (const int result = mutex.lock(); result != 0) {
             cout << "ShmMutexScope.lock: " << result << endl;
         }

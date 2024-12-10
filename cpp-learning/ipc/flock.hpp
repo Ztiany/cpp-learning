@@ -78,10 +78,10 @@ public:
 
 
 class SharedFileLockScope {
-    FileLock& lock;
+    const FileLock& lock;
 
 public:
-    explicit SharedFileLockScope(FileLock& mutex) : lock(mutex) {
+    explicit SharedFileLockScope(const FileLock& mutex) : lock(mutex) {
         if (!lock.lock(SharedLockType)) {
             cout << "SharedFileLockScope.lock error" << endl;
         }
@@ -95,10 +95,10 @@ public:
 };
 
 class ExclusiveFileLockScope {
-    FileLock& lock;
+    const FileLock& lock;
 
 public:
-    explicit ExclusiveFileLockScope(FileLock& mutex) : lock(mutex) {
+    explicit ExclusiveFileLockScope(const FileLock& mutex) : lock(mutex) {
         if (!lock.lock(ExclusiveLockType)) {
             cout << "ExclusiveFileLockScope.lock error" << endl;
         }
