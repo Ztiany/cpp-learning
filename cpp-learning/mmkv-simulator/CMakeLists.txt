@@ -1,0 +1,1 @@
+add_executable(mmkv-simulator main.cpp)
